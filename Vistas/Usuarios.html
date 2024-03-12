@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Estilo3.css">
+    <link rel="icon" href="./Imagenes/Icono manzanas.png" type="image/png">
+    <script src="jspdf.min.js"></script>
+    <title>Bienvenido</title>
+</head>
+<body>
+    <button id="Boton_cerrar_sesion"><img src="./Imagenes/Imagen de cerrar sesion.png" alt="Imagen de cerrar sesion" ></button>
+    <h1 id="ID_Usuario">Hola señor usuario!</h1>
+
+    <button id="Boton_servicios_disponibles">Servicios disponibles</button>
+    <button id="Boton_servicios_inscritos">Ver servicios inscritos</button>
+
+    <div id="Contenedor_servicios" style="display: none;">
+        <form id="FormularioSeleccionServicio" style="margin: 30px;">
+            <ul id="Lista_servicios"></ul>
+            <input type="datetime-local" id="fechaHora" name="fecha">
+            <button type="submit" id="Boton_guardar_servicio">Guardar</button>                       
+        </form>        
+    </div>
+
+    <div id="Solicitudes_contenedor" style="display: none;">
+        <h2>Servicios inscritos</h2>
+        <ul id="Lista_solicitudes"></ul>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const usuario = params.get('usuario');
+            document.getElementById('ID_Usuario').textContent = `Bienvenido: ${usuario}`;
+            
+            const Contenedor_servicios = document.getElementById('Contenedor_servicios');
+            const FormularioSeleccionServicio = document.getElementById('FormularioSeleccionServicio');
+            const Solicitudes_contenedor = document.getElementById('Solicitudes_contenedor');
+            const Lista_solicitudes = document.getElementById('Lista_solicitudes');
+
+            let visibleServicios = false;
+            let visibleSolicitudes = false;
+            
+            Boton_servicios_disponibles.addEventListener('click', () => {
+                if (visibleServicios) {
+                    Contenedor_servicios.style.display = 'none';
+                } else {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/obtener-servicios-usuario', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const data = JSON.parse(xhr.responseText);
+                                Lista_servicios.innerHTML = data.servicios.map(servicio => `
+                                <label><input type="checkbox" name="servicios" value="${servicio}"> ${servicio}</label>`).join('');
+                                Contenedor_servicios.style.display = 'block';
+                            } else {
+                                console.error('Error al obtener servicio');
+                            }
+                        }
+                    };
+                    xhr.send(JSON.stringify({usuario}));
+                }
+                visibleServicios = !visibleServicios; 
+            });
+            
+            Boton_servicios_inscritos.addEventListener('click', () => {
+                if (visibleSolicitudes) {
+                    Solicitudes_contenedor.style.display = 'none';
+                } else {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/obtener-solicitudes-usuario', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const data = JSON.parse(xhr.responseText);
+                                Lista_solicitudes.innerHTML = data.solicitudes.map(solicitud => `
+                                    <li>
+                                        ID: ${solicitud.ID_solicitud}, 
+                                        <span class="fecha-solicitud">Fecha: ${solicitud.Fecha}</span>, 
+                                        <span class="servicio-solicitud">Servicio: ${solicitud.Nombre}</span>
+                                        <button class="btn-borrar-solicitud" data-id="${solicitud.ID_solicitud}">Borrar</button>
+                                        <button class="btn-imprimir-pdf" data-id="${solicitud.ID_solicitud}">Imprimir en PDF</button>
+                                    </li>
+                                `).join('');
+                                Solicitudes_contenedor.style.display = 'block';
+                            } else {
+                            console.error('Error al obtener solicitudes');
+                            }
+                        }
+                    };
+                    xhr.send(JSON.stringify({ usuario }));
+                }   
+                visibleSolicitudes = !visibleSolicitudes;               
+            });
+
+            FormularioSeleccionServicio.addEventListener('submit', async (event) => {
+                event.preventDefault();                
+                const serviciosSeleccionados = Array.from(FormularioSeleccionServicio.elements['servicios'])
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+                const fechaHora = FormularioSeleccionServicio.elements['fecha'].value;              
+                const xhrGuardar = new XMLHttpRequest();
+                xhrGuardar.open('POST', '/guardar-servicios-usuario', true);
+                xhrGuardar.setRequestHeader('Content-Type', 'application/json');
+                xhrGuardar.onreadystatechange = function() {
+                    if (xhrGuardar.readyState === 4) {
+                        if (xhrGuardar.status === 201) {
+                            alert('Servicios guardados correctamente');
+                        } else {
+                            console.error('Error al guardar servicios');
+                        }
+                    }
+                };
+                const data = {
+                    usuario,
+                    servicios: serviciosSeleccionados,
+                    fecha: fechaHora
+                };
+                xhrGuardar.send(JSON.stringify(data));
+            });
+
+            // Borrar solicitud
+            document.addEventListener('click', (event) => {
+                if (event.target.classList.contains('btn-borrar-solicitud')) {
+                    const solicitudId = event.target.dataset.id;
+                    const confirmarBorrado = confirm('¿Estás seguro de que deseas borrar esta solicitud?');
+                    if (confirmarBorrado) {
+                        const xhrBorrar = new XMLHttpRequest();
+                        xhrBorrar.open('POST', '/borrar-solicitud', true);
+                        xhrBorrar.setRequestHeader('Content-Type', 'application/json');
+                        xhrBorrar.onreadystatechange = function() {
+                            if (xhrBorrar.readyState === 4) {
+                                if (xhrBorrar.status === 200) {
+                                    alert('Solicitud borrada correctamente');
+                                    // Recargar las solicitudes después de borrar una
+                                    Boton_servicios_inscritos.click();
+                                } else {
+                                    console.error('Error al borrar solicitud');
+                                }
+                            }
+                        };
+                        xhrBorrar.send(JSON.stringify({ solicitudId }));
+                    }
+                }
+            });
+
+            window.onload=function(){
+                window.history.forward();
+            };
+            
+            window.onpageshow=function(JPS){
+                if(JPS.persisted){
+                    window.location.reload();
+                }
+            }
+
+            // Cerrar sesión
+            document.getElementById('Boton_cerrar_sesion').addEventListener('click', () => {
+                const xhrCerrarSesion = new XMLHttpRequest();
+                xhrCerrarSesion.open('POST', '/CerrarSesion', true);
+                xhrCerrarSesion.setRequestHeader('Content-Type', 'application/json');
+                xhrCerrarSesion.onreadystatechange = function() {
+                    if (xhrCerrarSesion.readyState === 4) {
+                        if (xhrCerrarSesion.status === 200) {
+                            console.log(xhrCerrarSesion.responseText);
+                            window.location.href = "Inicio.html";
+                        } else {
+                            console.error('Error al cerrar sesión');
+                        }
+                    }
+                };
+                xhrCerrarSesion.send(JSON.stringify({
+                    usuario
+                }));
+            }); 
+
+            // "Imprimir en PDF"
+            document.addEventListener('click', (event) => {
+                if (event.target.classList.contains('btn-imprimir-pdf')) {
+                    const solicitudId = event.target.dataset.id;
+                    console.log(`Solicitud ID: ${solicitudId}`);
+
+                    const solicitudElement = document.querySelector(`[data-id="${solicitudId}"]`);
+
+                    const fechaElement = document.querySelector(`[data-id="${solicitudId}"] .fecha-solicitud`);
+                    const servicioElement = document.querySelector(`[data-id="${solicitudId}"] .servicio-solicitud`);
+
+                    console.log("Fecha Element:", fechaElement);
+                    console.log("Servicio Element:", servicioElement);
+
+                    const doc = new jsPDF();
+                    doc.text(`ID de la solicitud: ${solicitudId}`, 10, 10);
+                    doc.text(`Fecha: ${fechaElement}`, 10, 20);
+                    doc.text(`Servicio: ${servicioElement}`, 10, 30);
+                    doc.save(`Solicitud_${solicitudId}.pdf`);   
+
+                }                
+            });
+
+        });
+    </script>    
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Estilo2.css">
+    <link rel="icon" href="./Imagenes/Icono manzanas.png" type="image/png">
+    <title>Inicio de sesión</title>
+</head>
+<body>
+    <form action="http://localhost:3000/Iniciar" method="post">
+        <div>
+            <h2>Ingrese sus datos</h2>
+        </div>
+        <label for="tipoDocumento">Tipo de documento:</label>
+        <select id="tipoDocumento" name="TipoDocumento">
+            <option value="Cédula de ciudadanía">Cédula de ciudadanía</option>
+            <option value="Pasaporte">Pasaporte</option>
+            <option value="Tarjeta de identidad">Tarjeta de identidad</option>
+        </select>
+        <label for="documento">Documento:</label>
+        <input type="text" id="documento" name="Documento" required/>
+        <button type="submit">Iniciar sesión</button>
+        <a href="Inicio.html"><button type="button" class="btn-naranja">Atrás</button></a>
+    </form>    
+</body>
+</html>
+

@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+body {
+    background-color: white;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+form div {
+    background-color: blue;
+    color: white;
+    border-radius: 15px;
+    font-size: 30px;
+    padding-right: 1px;
+    padding-left: 1px;
+    margin-bottom: 60px;  
+}
+
+form {
+    padding: 15px;
+    text-align: center;
+}
+
+label {
+    padding-bottom: 3px;
+    display: block;
+    text-align: center;
+}
+
+select,input[type="text"] {
+    width: 70%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+button {
+    display: inline-flex;
+    margin: 40px;
+    padding: 1px 1px;
+    cursor: pointer;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+button.btn-naranja {
+    border: none;
+    background-color: rgb(187, 124, 6);
+    color: black;
+    padding: 13px;
+    border-top-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;    
+}

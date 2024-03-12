@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Estilo3.css">
+    <link rel="icon" href="./Imagenes/Icono manzanas.png" type="image/png">
+    <title>Bienvenido Admin</title>
+</head>
+<body>    
+    <button id="Boton_cerrar_sesion"><img src="./Imagenes/Imagen de cerrar sesion.png" alt="Imagen de cerrar sesion" ></button>
+    <h1 id="ID_Usuario">Hola Admin</h1>
+    <button id="Boton_ver_manzanas_registradas">Ver manzanas registradas</button>
+    <button id="Boton_ver_servicios_registrados">Ver servicios registrados</button>
+    <button id="Boton_ver_solicitudes_registradas">Ver solicitudes registradas</button>
+    <button id="Boton_ver_usuarios_registrados">Ver usuarios registrados</button>
+
+    <div id="Contenedor_manzanas_registradas" style="display: none;">   
+        <h2>Manzanas registradas</h2>     
+        <ul id="Lista_manzanas_registradas">
+
+        </ul>        
+    </div>
+
+    <div id="Contenedor_servicios_registrados" style="display: none;">
+        <h2>Servicios registrados</h2>
+        <ul id="Lista_servicios_registrados">
+
+        </ul>       
+    </div>
+
+    <div id="Contenedor_solicitudes_registradas" style="display: none;">
+        <h2>Solicitudes registradas</h2>
+        <ul id="Lista_solicitudes_registradas">
+
+        </ul>
+    </div>
+
+    <div id="Contenedor_usuarios_registrados" style="display: none;"> 
+        <h2>Usuarios registrados</h2>       
+        <ul id="Lista_usuarios_registrados">
+
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const usuario = params.get('usuario');
+            document.getElementById('ID_Usuario').textContent = `Bienvenido: ${usuario}`;
+            
+            const Contenedor_manzanas_registradas = document.getElementById('Contenedor_manzanas_registradas');
+            const Contenedor_servicios_registrados = document.getElementById('Contenedor_servicios_registrados');
+            const Contenedor_solicitudes_registradas = document.getElementById('Contenedor_solicitudes_registradas');
+            const Contenedor_usuarios_registrados = document.getElementById('Contenedor_usuarios_registrados');
+
+            let visibleManzanas = false;
+            let visibleServicios = false;
+            let visibleSolicitudes = false;
+            let visibleUsuarios = false;
+            
+            Boton_ver_manzanas_registradas.addEventListener('click', () => {
+                if (visibleManzanas) {
+                    Contenedor_manzanas_registradas.style.display = 'none';
+                } else {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/obtener-manzanas-registradas', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const data = JSON.parse(xhr.responseText);
+                                Lista_manzanas_registradas.innerHTML = data.manzanas.map(manzana => `
+                                    <li>
+                                        Codigo_manzana: ${manzana.Codigo_manzana}<br>
+                                        Nombre: ${manzana.Nombre}<br>
+                                        Localidad: ${manzana.Localidad}<br>
+                                        Direccion: ${manzana.Dirección}<br>
+                                        Codigo_servicio: ${manzana.Codigo_servicio}<br>
+                                        <button class="btn-borrar-manzana" data-id="${manzana.Codigo_manzana}">Borrar información manzana</button>
+                                        <button class="btn-editar-manzana" data-id="${manzana.Codigo_manzana}">Editar información manzana</button>
+                                        <button class="btn-guardar-cambios-manzana" data-id="${manzana.Codigo_manzana}">Guardar cambios manzana</button>
+                                    </li>
+                                `).join('');
+                                Contenedor_manzanas_registradas.style.display = 'block';
+                            } else {
+                                console.error('Error al obtener manzanas registradas');
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+                visibleManzanas = !visibleManzanas; 
+            });
+
+            Boton_ver_servicios_registrados.addEventListener('click', () => {
+                if (visibleServicios) {
+                    Contenedor_servicios_registrados.style.display = 'none';
+                } else {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/obtener-servicios-registrados', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const data = JSON.parse(xhr.responseText);
+                                Lista_servicios_registrados.innerHTML = data.servicios.map(servicios => `
+                                    <li>
+                                        Codigo_servicio: ${servicios.Codigo_servicio}<br>
+                                        Nombre: ${servicios.Nombre}<br>
+                                        Tipo: ${servicios.Tipo}<br>
+                                        Descripcion: ${servicios.Descripción}<br>
+                                        <button class="btn-borrar-servicio" data-id="${servicios.Codigo_servicio}">Borrar información servicio</button>
+                                        <button class="btn-editar-servicio" data-id="${servicios.Codigo_servicio}">Editar información servicio</button>
+                                        <button class="btn-guardar-cambios-servicio" data-id="${servicios.Codigo_servicio}">Guardar cambios servicio</button>
+                                    </li>
+                                `).join('');
+                                Contenedor_servicios_registrados.style.display = 'block';
+                            } else {
+                                console.error('Error al obtener servicios registrados');
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+                visibleServicios = !visibleServicios; 
+            });
+
+            Boton_ver_solicitudes_registradas.addEventListener('click', () => {
+                if (visibleSolicitudes) {
+                    Contenedor_solicitudes_registradas.style.display = 'none';
+                } else {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/obtener-solicitudes-registradas', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const data = JSON.parse(xhr.responseText);
+                                Lista_solicitudes_registradas.innerHTML = data.solicitudes.map(solicitudes => `
+                                    <li>
+                                        ID_solicitud: ${solicitudes.ID_solicitud}<br>
+                                        Fecha: ${solicitudes.Fecha}<br>
+                                        ID_Usuario: ${solicitudes.ID_Usuario}<br>
+                                        Codigo_servicio: ${solicitudes.Codigo_servicio}<br>
+                                        Codigo_manzana: ${solicitudes.Codigo_manzana}<br>
+                                        <button class="btn-borrar-solicitud" data-id="${solicitudes.Codigo_solicitud}">Borrar información solicitud</button>
+                                        <button class="btn-editar-solicitud" data-id="${solicitudes.Codigo_solicitud}">Editar información solicitud</button>
+                                        <button class="btn-guardar-cambios-solicitud" data-id="${solicitudes.Codigo_solicitud}">Guardar cambios solicitud</button>
+                                    </li>
+                                `).join('');
+                                Contenedor_solicitudes_registradas.style.display = 'block';
+                            } else {
+                                console.error('Error al obtener solicitudes registradas');
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+                visibleSolicitudes = !visibleSolicitudes; 
+            });
+
+            Boton_ver_usuarios_registrados.addEventListener('click', () => {
+                if (visibleUsuarios) {
+                    Contenedor_usuarios_registrados.style.display = 'none';
+                } else {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/obtener-usuarios-registrados', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const data = JSON.parse(xhr.responseText);
+                                Lista_usuarios_registrados.innerHTML = data.usuarios.map(usuarios => `
+                                    <li>
+                                        ID_Usuario: ${usuarios.ID_Usuario}<br>
+                                        Nombre: ${usuarios.Nombre}<br>
+                                        TipoDocumento: ${usuarios.TipoDocumento}<br>
+                                        Documento: ${usuarios.Documento}<br>
+                                        Rol: ${usuarios.Rol}<br>
+                                        Codigo_manzana: ${usuarios.Codigo_manzana}<br>
+                                        <button class="btn-borrar-usuario" data-id="${usuarios.ID_Usuario}">Borrar información usuario</button>
+                                        <button class="btn-editar-usuario" data-id="${usuarios.ID_Usuario}">Editar información usuario</button>
+                                        <button class="btn-guardar-cambios-usuario" data-id="${usuarios.ID_Usuario}">Guardar cambios usuario</button>
+                                    </li>
+                                `).join('');
+                                Contenedor_usuarios_registrados.style.display = 'block';
+                            } else {
+                                console.error('Error al obtener usuarios registrados');
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+                visibleUsuarios = !visibleUsuarios; 
+            });
+
+            window.onload=function(){
+                window.history.forward();
+            };
+            
+            window.onpageshow=function(JPS){
+                if(JPS.persisted){
+                    window.location.reload();
+                }
+            }
+
+           // Cerrar sesión
+           document.getElementById('Boton_cerrar_sesion').addEventListener('click', () => {
+                const xhrCerrarSesion = new XMLHttpRequest();
+                xhrCerrarSesion.open('POST', '/CerrarSesion', true);
+                xhrCerrarSesion.setRequestHeader('Content-Type', 'application/json');
+                xhrCerrarSesion.onreadystatechange = function() {
+                    if (xhrCerrarSesion.readyState === 4) {
+                        if (xhrCerrarSesion.status === 200) {
+                            console.log(xhrCerrarSesion.responseText);
+                            window.location.href = "Inicio.html";
+                        } else {
+                            console.error('Error al cerrar sesión');
+                        }
+                    }
+                };
+                xhrCerrarSesion.send(JSON.stringify({
+                    usuario
+                }));
+            });
+
+            // Borrar info manzana
+            document.addEventListener('click', (event) => {
+                if (event.target.classList.contains('btn-borrar-manzana')) {
+                    const Codigo_manzana = event.target.dataset.id;
+                    const confirmarBorrado = confirm('¿Estás seguro de que deseas borrar esta manzana?');
+                    if (confirmarBorrado) {
+                        const xhrBorrar = new XMLHttpRequest();
+                        xhrBorrar.open('POST', '/borrar-manzana', true);
+                        xhrBorrar.setRequestHeader('Content-Type', 'application/json');
+                        xhrBorrar.onreadystatechange = function() {
+                            if (xhrBorrar.readyState === 4) {
+                                if (xhrBorrar.status === 200) {
+                                    alert('Manzana borrada correctamente');
+                                    // Recargar las manzanas después de borrar una
+                                    Boton_ver_manzanas_registradas.click();
+                                } else {
+                                    console.error('Error al borrar manzana');
+                                }
+                            }
+                        };
+                        xhrBorrar.send(JSON.stringify({ Codigo_manzana }));
+                    }
+                }
+            });
+
+            // Borrar info servicio
+            document.addEventListener('click', (event) => {
+                if (event.target.classList.contains('btn-borrar-servicio')) {
+                    const Codigo_servicio = event.target.dataset.id;
+                    const confirmarBorrado = confirm('¿Estás seguro de que deseas borrar este servicio?');
+                    if (confirmarBorrado) {
+                        const xhrBorrar = new XMLHttpRequest();
+                        xhrBorrar.open('POST', '/borrar-servicio', true);
+                        xhrBorrar.setRequestHeader('Content-Type', 'application/json');
+                        xhrBorrar.onreadystatechange = function() {
+                            if (xhrBorrar.readyState === 4) {
+                                if (xhrBorrar.status === 200) {
+                                    alert('Servicio borrado correctamente');
+                                    // Recargar los servicios después de borrar uno
+                                    Boton_ver_servicios_registrados.click();
+                                } else {
+                                    console.error('Error al borrar servicio');
+                                }
+                            }
+                        };
+                        xhrBorrar.send(JSON.stringify({ Codigo_servicio }));
+                    }
+                }
+            });
+
+            // Borrar info solicitud
+            document.addEventListener('click', (event) => {
+                if (event.target.classList.contains('btn-borrar-solicitud')) {
+                    const ID_solicitud= event.target.dataset.id;
+                    const confirmarBorrado = confirm('¿Estás seguro de que deseas borrar esta solicitud?');
+                    if (confirmarBorrado) {
+                        const xhrBorrar = new XMLHttpRequest();
+                        xhrBorrar.open('POST', '/borrar-solicitud', true);
+                        xhrBorrar.setRequestHeader('Content-Type', 'application/json');
+                        xhrBorrar.onreadystatechange = function() {
+                            if (xhrBorrar.readyState === 4) {
+                                if (xhrBorrar.status === 200) {
+                                    alert('Solicitud borrada correctamente');
+                                    // Recargar los solicitudes después de borrar una
+                                    Boton_ver_solicitudes_registradas.click();
+                                } else {
+                                    console.error('Error al borrar solicitud');
+                                }
+                            }
+                        };
+                        xhrBorrar.send(JSON.stringify({ ID_solicitud }));
+                    }
+                }
+            });
+
+            // Borrar info usuario
+            document.addEventListener('click', (event) => {
+                if (event.target.classList.contains('btn-borrar-usuario')) {
+                    const ID_Usuario= event.target.dataset.id;
+                    const confirmarBorrado = confirm('¿Estás seguro de que deseas borrar este usuario?');
+                    if (confirmarBorrado) {
+                        const xhrBorrar = new XMLHttpRequest();
+                        xhrBorrar.open('POST', '/borrar-usuario', true);
+                        xhrBorrar.setRequestHeader('Content-Type', 'application/json');
+                        xhrBorrar.onreadystatechange = function() {
+                            if (xhrBorrar.readyState === 4) {
+                                if (xhrBorrar.status === 200) {
+                                    alert('Usuario borrado correctamente');
+                                    // Recargar los usuarios después de borrar uno
+                                    Boton_ver_usuarios_registrados.click();
+                                } else {
+                                    console.error('Error al borrar usuario');
+                                }
+                            }
+                        };
+                        xhrBorrar.send(JSON.stringify({ ID_Usuario }));
+                    }
+                }
+            });
+            
+        });
+    </script>    
+</body>
+</html>

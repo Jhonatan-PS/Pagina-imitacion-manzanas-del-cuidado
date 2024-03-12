@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Capriola&family=Girassol&display=swap');
+
+body {
+    margin: 0;
+    background-color:aliceblue;
+}
+
+#Boton_servicios_disponibles {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+#Boton_servicios_inscritos {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+#Boton_guardar_servicio {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+.btn-borrar-solicitud {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+.btn-imprimir-pdf {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+#ID_Usuario {
+    margin: 30px;
+    padding: 10px;
+    text-shadow: 1px 1px 30px rgb(164, 2, 245);
+    width: 300px;
+    font-family: "Girassol", serif;
+    font-weight: bolder;
+    font-style: normal;
+}
+
+input {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    padding: 10px;
+    margin: 15px;
+    border-radius: 10px;
+}
+
+#Lista_servicios {
+    display: grid;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#Lista_solicitudes {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#Solicitudes_contenedor {
+    margin: 15px;
+}
+
+#Solicitudes_contenedor h2 {
+    font-family: "Girassol", serif;
+    font-weight: bolder;
+    font-style: normal;
+}
+
+#Boton_cerrar_sesion {
+    background-color: white;
+    position: fixed;
+    top: 20px; 
+    right: 20px; 
+    z-index: 9999; 
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 1px 1px 30px rgb(133, 48, 175);
+}
+
+#Boton_cerrar_sesion img {
+    width: 50px;
+    height: 50px;    
+}
+
+#Boton_ver_manzanas_registradas {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+#Boton_ver_servicios_registrados {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+#Boton_ver_solicitudes_registradas {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+#Boton_ver_usuarios_registrados {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+#Contenedor_manzanas_registradas {
+    margin: 25px;
+}
+
+#Contenedor_manzanas_registradas h2{
+    font-family: "Girassol", serif;
+    font-weight: bolder;
+    font-style: normal;  
+}
+
+#Lista_manzanas_registradas {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.btn-borrar-manzana {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+.btn-editar-manzana {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
+
+.btn-guardar-cambios-manzana {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
+
+#Contenedor_servicios_registrados {
+    margin: 25px;
+}
+
+#Contenedor_servicios_registrados h2{
+    font-family: "Girassol", serif;
+    font-weight: bolder;
+    font-style: normal;  
+}
+
+#Lista_servicios_registrados {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.btn-borrar-servicio {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+.btn-editar-servicio {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
+
+.btn-guardar-cambios-servicio {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
+
+#Contenedor_solicitudes_registradas {
+    margin: 25px;
+}
+
+#Contenedor_solicitudes_registradas h2{
+    font-family: "Girassol", serif;
+    font-weight: bolder;
+    font-style: normal;  
+}
+
+#Lista_solicitudes_registradas {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.btn-borrar-solicitud {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+.btn-editar-solicitud {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
+
+.btn-guardar-cambios-solicitud {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
+
+#Contenedor_usuarios_registrados {
+    margin: 25px;
+}
+
+#Contenedor_usuarios_registrados h2{
+    font-family: "Girassol", serif;
+    font-weight: bolder;
+    font-style: normal;  
+}
+
+#Lista_usuarios_registrados {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.btn-borrar-usuario {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);
+}
+
+.btn-editar-usuario {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
+
+.btn-guardar-cambios-usuario {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(167, 82, 210);    
+}
